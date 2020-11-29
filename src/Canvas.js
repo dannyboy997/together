@@ -70,7 +70,7 @@ class Canvas extends Component {
             userId: this.userId,
         };
 
-        await fetch('https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId}&userId=${this.userId}', {
+        await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -82,7 +82,7 @@ class Canvas extends Component {
     }
 
     async timer() {
-        const response = await fetch('https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId}&userId=${this.userId}', {
+        const response = await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
             method: 'get',
             headers: {
                 'content-type': 'application/json',
