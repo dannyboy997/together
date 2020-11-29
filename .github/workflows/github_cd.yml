@@ -35,4 +35,4 @@ jobs:
       with:
         # Specify the script here
         inlineScript: |
-          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --destination $web --source ./build   
+          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --destination '$web' --source ./build   
