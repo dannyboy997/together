@@ -1,7 +1,8 @@
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - main
 
 env:
   AZURE_STORAGE_ACCOUNT_Name: your-app-name    # set this to your application's nam
