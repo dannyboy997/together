@@ -11,8 +11,6 @@ class Canvas extends Component {
         this.name = this.props.name;
     }
 
-
-
     isPainting = false;
     // Different stroke styles to be used for user and guest
     userStrokeStyle = '#EE92C2';
@@ -72,7 +70,7 @@ class Canvas extends Component {
             userId: this.userId,
         };
 
-        await fetch('https://togetherservice.azurewebsites.net/paint?roomId=' + this.props.roomId ?? 'default' + '&userId=' + this.userId, {
+        await fetch('https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId}&userId=${this.userId}', {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -84,14 +82,14 @@ class Canvas extends Component {
     }
 
     async timer() {
-        const response = await fetch('https://togetherservice.azurewebsites.net/paint?roomId=' + this.props.roomId ?? 'default' + '&userId=' + this.userId, {
+        const response = await fetch('https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId}&userId=${this.userId}', {
             method: 'get',
             headers: {
                 'content-type': 'application/json',
             },
         });
 
-        if (response.text === null || response.text === undefined || response.status != 200) {
+        if (response.text === null || response.text === undefined || response.status !== 200) {
             return;
         }
 
