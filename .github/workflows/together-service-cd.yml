@@ -1,0 +1,38 @@
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  AZURE_APPSERVICE_NAME: 'togetherservice'
+  NODE_VERSION: '10.x'
+
+defaults:
+  run:
+    working-directory: ./Service
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - run: dotnet build ./Service/TogetherService.sln
+    
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Azure CLI Action
+      uses: Azure/cli@1.0.4
+      with:
+        # Specify the script here
+        inlineScript: |
+          az webapp deployment source --app-working-dir ./Service --name ${{ env.AZURE_APPSERVICE_NAME }} --resource-group together
