@@ -41,4 +41,4 @@ jobs:
       with:
         # Specify the script here
         inlineScript: |
-          az webapp deployment source --app-working-dir ./Service --name ${{ env.AZURE_APPSERVICE_NAME }} --resource-group together
+          az webapp deployment source --name ${{ env.AZURE_APPSERVICE_NAME }} --resource-group together
