@@ -17,7 +17,7 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
 
-  steps:
+    steps:
     - uses: actions/checkout@v2
 
     - name: Setup .NET Core
@@ -27,7 +27,7 @@ jobs:
 
     - name: Install dependencies
       run: dotnet restore
-      
+
     - name: Build
       run: dotnet build --configuration Release --no-restore
     
