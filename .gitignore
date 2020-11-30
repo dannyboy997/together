@@ -5,6 +5,7 @@ obj
 .vscode
 *.csproj.user
 .suo
+.eslintcache
 
 # dependencies
 node_modules

@@ -20,6 +20,7 @@ class Canvas extends Component {
     userId = v4();
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
+    lastRefresh;
 
     onMouseDown({ nativeEvent }) {
         const { offsetX, offsetY } = nativeEvent;
@@ -40,6 +41,8 @@ class Canvas extends Component {
             this.line = this.line.concat(positionData);
             this.paint(this.prevPos, offSetData, this.userStrokeStyle);
         }
+
+        this.refreshData();
     }
 
     endPaintEvent() {
@@ -77,35 +80,37 @@ class Canvas extends Component {
                 'content-type': 'application/json',
             },
         });
-
-        await this.timer();
     }
 
-    async timer() {
-        const response = await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
-            method: 'get',
-            headers: {
-                'content-type': 'application/json',
-            },
-        });
+    async refreshData() {
+        if (this.lastRefresh + 1000 < Date.now()) {
+            this.lastRefresh = Date.now();
 
-        if (response.text === null || response.text === undefined || response.status !== 200) {
-            return;
-        }
+            const response = await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
+                method: 'get',
+                headers: {
+                    'content-type': 'application/json',
+                },
+            });
 
-        const data = await response.json();
-
-        if (data == null) {
-            return;
-        }
-
-        data.forEach((lineData) => {
-            if (lineData.userId !== this.userId) {
-                lineData.line.forEach((position) => {
-                    this.paint(position.start, position.stop, this.guestStrokeStyle);
-                });
+            if (response.text === null || response.text === undefined || response.status !== 200) {
+                return;
             }
-        });
+
+            const data = await response.json();
+
+            if (data == null) {
+                return;
+            }
+
+            data.forEach((lineData) => {
+                if (lineData.userId !== this.userId) {
+                    lineData.line.forEach((position) => {
+                        this.paint(position.start, position.stop, this.guestStrokeStyle);
+                    });
+                }
+            });
+        }
     }
 
     componentDidMount() {
