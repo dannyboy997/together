@@ -121,8 +121,6 @@ class Canvas extends Component {
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
         this.ctx.lineWidth = 5;
-
-        this.timer();
     }
 
     render() {
