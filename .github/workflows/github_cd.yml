@@ -8,10 +8,15 @@ env:
   AZURE_STORAGE_ACCOUNT: 'togethersa01'
   NODE_VERSION: '10.x'
 
+defaults:
+  run:
+    working-directory: ./Web
+
 jobs:
   build-and-deploy:
     name: Build and Deploy
     runs-on: ubuntu-latest
+
     steps:
     - uses: actions/checkout@v2
     
