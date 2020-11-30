@@ -7,6 +7,7 @@ on:
 env:
   AZURE_APPSERVICE_NAME: 'togetherservice'
   NODE_VERSION: '10.x'
+  AZURE_WEBAPP_PACKAGE_PATH: './Service/ServiceRelease'
 
 defaults:
   run:
@@ -29,16 +30,17 @@ jobs:
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: |
+        dotnet build --configuration Release --no-restore
+        dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}' 
     
     - name: Azure Login
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure CLI Action
-      uses: Azure/cli@1.0.4
-      with:
-        # Specify the script here
-        inlineScript: |
-          az webapp deployment source --name '${{ env.AZURE_APPSERVICE_NAME }}'' --resource-group 'together'
+    - uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
