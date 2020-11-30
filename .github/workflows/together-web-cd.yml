@@ -1,3 +1,4 @@
+name: Web - CD
 
 on:
   push:
