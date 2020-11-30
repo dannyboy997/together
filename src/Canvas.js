@@ -83,7 +83,7 @@ class Canvas extends Component {
     }
 
     async refreshData() {
-        if (this.lastRefresh + 1000 < Date.now()) {
+        if (this.lastRefresh === undefined || this.lastRefresh + 1000 < Date.now()) {
             this.lastRefresh = Date.now();
 
             const response = await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
