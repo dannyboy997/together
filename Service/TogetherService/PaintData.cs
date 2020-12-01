@@ -17,6 +17,8 @@ namespace TogetherService
         public PaintCoordinate Start { get; set; }
 
         public PaintCoordinate Stop { get; set; }
+
+        public string Color { get; set; }
     }
 
     public class PaintCoordinate

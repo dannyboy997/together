@@ -9,6 +9,7 @@ class Canvas extends Component {
         this.endPaintEvent = this.endPaintEvent.bind(this);
         this.roomId = this.props.roomId;
         this.name = this.props.name;
+        this.userStrokeStyle = this.props.format;
     }
 
     isPainting = false;
@@ -67,10 +68,15 @@ class Canvas extends Component {
         this.prevPos = { offsetX, offsetY };
     }
 
+    clear() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+
     async sendPaintData() {
         const body = {
             line: this.line,
             userId: this.userId,
+            color: this.userStrokeStyle
         };
 
         await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
@@ -105,8 +111,8 @@ class Canvas extends Component {
 
             data.forEach((lineData) => {
                 if (lineData.userId !== this.userId) {
-                    lineData.line.forEach((position) => {
-                        this.paint(position.start, position.stop, this.guestStrokeStyle);
+                    lineData.line.forEach((line) => {
+                        this.paint(line.start, line.stop, line.color);
                     });
                 }
             });
@@ -120,7 +126,9 @@ class Canvas extends Component {
         this.ctx = this.canvas.getContext('2d');
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
-        this.ctx.lineWidth = 5;
+        this.ctx.lineWidth = 2;
+
+        this.clear();
     }
 
     render() {
