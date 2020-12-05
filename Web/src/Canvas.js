@@ -9,19 +9,26 @@ class Canvas extends Component {
         this.endPaintEvent = this.endPaintEvent.bind(this);
         this.roomId = this.props.roomId;
         this.name = this.props.name;
-        this.userStrokeStyle = this.props.format;
+
+        this.state = {
+            color: this.props.format
+          };
     }
 
     isPainting = false;
     // Different stroke styles to be used for user and guest
-    userStrokeStyle = '#EE92C2';
-    guestStrokeStyle = '#F0C987';
     line = [];
     // v4 creates a unique id for each user. We used this since there's no auth to tell users apart
     userId = v4();
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
     lastRefresh;
+
+    changeFormat (format) {
+        this.setState({
+            color: format
+          });
+    }
 
     onMouseDown({ nativeEvent }) {
         const { offsetX, offsetY } = nativeEvent;
@@ -40,7 +47,7 @@ class Canvas extends Component {
             };
             // Add the position to the line array
             this.line = this.line.concat(positionData);
-            this.paint(this.prevPos, offSetData, this.userStrokeStyle);
+            this.paint(this.prevPos, offSetData, this.state.color);
         }
 
         this.refreshData();
@@ -76,7 +83,7 @@ class Canvas extends Component {
         const body = {
             line: this.line,
             userId: this.userId,
-            color: this.userStrokeStyle
+            color: this.state.color
         };
 
         await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {

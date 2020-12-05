@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import './App.css';
-import Canvas from './Canvas';
+import Draw from './Draw';
 
 
 class App extends Component {
@@ -28,18 +28,7 @@ class App extends Component {
       <Fragment>
         <h3 style={{ textAlign: 'center' }}>Paint</h3>
         <div className="main">
-          <div className="color-guide">
-            <div>
-              Room Name: <input type="text" value={this.state.roomId} onChange={this.handleRoomIdChange} />
-            </div>
-            <div>
-              Name: <input type="text" value={this.state.userName} onChange={this.handleNameChange} />
-            </div>
-            <h5>Color Guide</h5>
-            <div className="user user">User</div>
-            <div className="user guest">Guest</div>
-          </div>
-          <Canvas roomId={this.state.roomId} name={this.state.userName} />
+          <Draw id = "main" />
         </div>
       </Fragment>
     );
