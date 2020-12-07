@@ -11,8 +11,8 @@ class Canvas extends Component {
         this.name = this.props.name;
 
         this.state = {
-            color: this.props.format
-          };
+            color: this.props.color
+        };
     }
 
     isPainting = false;
@@ -23,11 +23,13 @@ class Canvas extends Component {
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
     lastRefresh;
+    serviceUrl = 'https://localhost:44386';
+    //serviceUrl = 'https://togetherservice.azurewebsites.net';
 
-    changeFormat (format) {
+    changeFormat(format) {
         this.setState({
             color: format
-          });
+        });
     }
 
     onMouseDown({ nativeEvent }) {
@@ -81,12 +83,15 @@ class Canvas extends Component {
 
     async sendPaintData() {
         const body = {
-            line: this.line,
-            userId: this.userId,
-            color: this.state.color
+            key: this.props.roomId,
+            paintData: [{
+                line: this.line,
+                userId: this.userId,
+                color: this.state.color,
+            }]
         };
 
-        await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
+        await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -99,7 +104,7 @@ class Canvas extends Component {
         if (this.lastRefresh === undefined || this.lastRefresh + 1000 < Date.now()) {
             this.lastRefresh = Date.now();
 
-            const response = await fetch(`https://togetherservice.azurewebsites.net/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
+            const response = await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
                 method: 'get',
                 headers: {
                     'content-type': 'application/json',
@@ -116,10 +121,10 @@ class Canvas extends Component {
                 return;
             }
 
-            data.forEach((lineData) => {
+            data.paintData.forEach((lineData) => {
                 if (lineData.userId !== this.userId) {
                     lineData.line.forEach((line) => {
-                        this.paint(line.start, line.stop, line.color);
+                        this.paint(line.start, line.stop, lineData.color);
                     });
                 }
             });

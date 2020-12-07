@@ -1,26 +1,28 @@
 ﻿
-
 namespace TogetherService.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Logging;
-    using System.Collections.Generic;
+    using System;
+    using System.Threading.Tasks;
+    using TogetherService.Model;
 
     [ApiController]
     [Route("[controller]")]
     public class PaintController : ControllerBase
-    {
-        private static readonly Dictionary<string, List<PaintData>> Rooms = new Dictionary<string, List<PaintData>>();
-        
+    {        
         private readonly ILogger<PaintController> _logger;
+        private readonly IDataAcess<Drawing> dataAcess;
 
         public PaintController(ILogger<PaintController> logger)
         {
             _logger = logger;
+            dataAcess = new MemoryDataAccess<Drawing>(new AzureBlobDataAccess<Drawing>("drawdata"));
         }
 
         [HttpGet]
-        public List<PaintData> Get(string roomId, string userId)
+        public async Task<Drawing> GetAsync(string roomId, string userId)
         {
             SetHeaders();
 
@@ -29,12 +31,14 @@ namespace TogetherService.Controllers
                 return null;
             }
 
-            if (Rooms.ContainsKey(roomId))
+            try
             {
-                return Rooms[roomId];
+                return await dataAcess.ReadAsync(roomId);
             }
-
-            return null;
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         [HttpOptions]
@@ -44,17 +48,27 @@ namespace TogetherService.Controllers
         }
 
         [HttpPost]
-        public void Post(string roomId, string userId, PaintData data)
+        public async Task PostAsync(string roomId, string userId, Drawing data)
         {
-            SetHeaders();
+            try
+            {
+                SetHeaders();
+                Drawing item = await dataAcess.ReadAsync(roomId);
 
-            if (Rooms.ContainsKey(roomId))
-            {
-                Rooms[roomId].Add(data);
+                if (item == null)
+                {
+                    await dataAcess.CreateAsync(data);
+                }
+                else
+                {
+                    item.PaintData.AddRange(data.PaintData);
+
+                    await dataAcess.UpdateAsync(item);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                Rooms.Add(roomId, new List<PaintData>() { data });
+
             }
         }
 
