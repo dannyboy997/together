@@ -91,7 +91,7 @@ class Canvas extends Component {
             }]
         };
 
-        await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
+        await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'live'}&userId=${this.userId}`, {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -104,7 +104,7 @@ class Canvas extends Component {
         if (this.lastRefresh === undefined || this.lastRefresh + 1000 < Date.now()) {
             this.lastRefresh = Date.now();
 
-            const response = await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'Live'}&userId=${this.userId}`, {
+            const response = await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'live'}&userId=${this.userId}`, {
                 method: 'get',
                 headers: {
                     'content-type': 'application/json',
