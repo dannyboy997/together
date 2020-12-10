@@ -23,8 +23,8 @@ class Canvas extends Component {
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
     lastRefresh;
-    serviceUrl = 'https://localhost:44386';
-    //serviceUrl = 'https://togetherservice.azurewebsites.net';
+    //serviceUrl = 'https://localhost:44386';
+    serviceUrl = 'https://togetherservice.azurewebsites.net';
 
     changeFormat(format) {
         this.setState({
