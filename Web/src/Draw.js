@@ -51,11 +51,8 @@ class Draw extends Component {
                 color={ this.state.color }
                 onChangeComplete={(color) => { this.hangleChangeColor(color.hex) } } />
             </div>
-            <h5>Color Guide</h5>
-            <div className="user user">User</div>
-            <div className="user guest">Guest</div>
           </div>
-          <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} format={this.state.color} />
+          <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />
         </div>
       </Fragment>
     );

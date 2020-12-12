@@ -6,6 +6,8 @@ class Canvas extends Component {
         super(props);
         this.onMouseDown = this.onMouseDown.bind(this);
         this.onMouseMove = this.onMouseMove.bind(this);
+        this.onTouchStart = this.onTouchStart.bind(this);
+        this.onTouchMove = this.onTouchMove.bind(this);
         this.endPaintEvent = this.endPaintEvent.bind(this);
         this.roomId = this.props.roomId;
         this.name = this.props.name;
@@ -33,12 +35,14 @@ class Canvas extends Component {
     }
 
     onMouseDown({ nativeEvent }) {
+        console.log('onMouseDown'); 
         const { offsetX, offsetY } = nativeEvent;
         this.isPainting = true;
         this.prevPos = { offsetX, offsetY };
     }
 
     onMouseMove({ nativeEvent }) {
+        console.log('onMouseMove'); 
         if (this.isPainting) {
             const { offsetX, offsetY } = nativeEvent;
             const offSetData = { offsetX, offsetY };
@@ -56,11 +60,61 @@ class Canvas extends Component {
     }
 
     endPaintEvent() {
+        console.log('endPaintEvent'); 
         if (this.isPainting) {
             this.isPainting = false;
             this.sendPaintData();
         }
     }
+
+    // Prevent scrolling when touching the canvas
+    onTouchStart(nativeEvent) {
+        console.log('onTouchStart'); 
+        if (nativeEvent === undefined) {
+            return;
+        }
+
+        if (nativeEvent.target === this.canvas) {
+            nativeEvent.preventDefault();
+        }
+
+        this.isPainting = true;
+
+        const { offsetX, offsetY } = this.getTouchPos(this.canvas, nativeEvent);
+        this.isPainting = true;
+        this.prevPos = { offsetX, offsetY };
+    }
+
+    onTouchMove(nativeEvent) {
+        console.log('onTouchMove'); 
+
+        if (nativeEvent === undefined) {
+            return;
+        }
+
+        if (nativeEvent.target === this.canvas) {
+            nativeEvent.preventDefault();
+        }
+        
+        const { offsetX, offsetY } = this.getTouchPos(this.canvas, nativeEvent);
+        const offSetData = { offsetX, offsetY };
+
+        const positionData = {
+            start: { ...this.prevPos },
+            stop: { ...offSetData },
+        };
+        // Add the position to the line array
+        this.line = this.line.concat(positionData);
+        this.paint(this.prevPos, offSetData, this.state.color);
+    }
+    
+    getTouchPos(canvasDom, touchEvent) {
+        var rect = canvasDom.getBoundingClientRect();
+        return {
+            offsetX: touchEvent.touches[0].clientX - rect.left,
+            offsetY: touchEvent.touches[0].clientY - rect.top
+        };
+      }
 
     paint(prevPos, currPos, strokeStyle) {
         const { offsetX, offsetY } = currPos;
@@ -139,6 +193,10 @@ class Canvas extends Component {
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
         this.ctx.lineWidth = 2;
+
+        this.canvas.addEventListener('touchstart', this.onTouchStart, { passive: false });
+        this.canvas.addEventListener('touchmove', this.onTouchMove, { passive: false });
+        this.canvas.addEventListener('touchend', this.endPaintEvent, { passive: false });
 
         this.clear();
     }

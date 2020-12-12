@@ -2,7 +2,6 @@
 namespace TogetherService.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Caching.Memory;
     using Microsoft.Extensions.Logging;
     using System;
     using System.Threading.Tasks;
@@ -18,7 +17,7 @@ namespace TogetherService.Controllers
         public PaintController(ILogger<PaintController> logger)
         {
             _logger = logger;
-            dataAcess = new MemoryDataAccess<Drawing>(new AzureBlobDataAccess<Drawing>("drawdata"));
+            dataAcess = new AzureBlobDataAccess<Drawing>("drawdata");
         }
 
         [HttpGet]
