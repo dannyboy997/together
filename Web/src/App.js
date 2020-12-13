@@ -28,7 +28,7 @@ class App extends Component {
       <Fragment>
         <h3 style={{ textAlign: 'center' }}>Paint</h3>
         <div className="main">
-          <Draw id = "main" />
+          <Draw id = "main"  roomId="welcome" />
         </div>
       </Fragment>
     );

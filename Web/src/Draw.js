@@ -6,7 +6,7 @@ import { BlockPicker } from 'react-color'
 class Draw extends Component {
   constructor(props) {
     super(props);
-    const id = props.match?.params?.id;
+    const id = props.match?.params?.id ?? this.props.roomId;
 
     this.state = {
       roomId: id,
@@ -41,10 +41,7 @@ class Draw extends Component {
         <div className="main">
           <div className="color-guide">
             <div>
-              Room Name: <input type="text" value={this.state.roomId} onChange={this.handleRoomIdChange} />
-            </div>
-            <div>
-              Name: <input type="text" value={this.state.userName} onChange={this.handleNameChange} />
+              Room Name:<label value={this.state.roomId} />
             </div>
             <div>
               <BlockPicker
