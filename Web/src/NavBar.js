@@ -4,7 +4,6 @@ import './App.css';
 class NavBar extends Component {
   constructor(props) {
     super(props);
-    const id = props.match?.params?.id ?? this.props.roomId;
 
     this.state = {
     };
@@ -13,8 +12,9 @@ class NavBar extends Component {
   render() {
     return (
       <Fragment>
-        <div className="main">
-          <a href="/">Home</a>
+        <div className="menu-div">
+          <a className="menu-button" href="/">Home</a>
+          <a className="menu-button" href="/draw">New Drawing</a>
         </div>
       </Fragment>
     );

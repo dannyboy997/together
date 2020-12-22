@@ -1,7 +1,9 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Draw from './Draw';
-
+import NewDraw from './NewDraw';
+import NavBar from './NavBar';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
@@ -25,12 +27,31 @@ class App extends Component {
 
   render() {
     return (
-      <Fragment>
-        <h3 style={{ textAlign: 'center' }}>Paint</h3>
-        <div className="main">
-          <Draw id = "main"  roomId="welcome" />
+      <React.StrictMode>
+        <div>
+          <div className="content-box">
+            <NavBar></NavBar>
+          </div>
+
+          <div class=".float-container">
+            <div class="left-menu">
+              <div className="content-box">
+                TEst
+              </div>
+            </div>
+
+            <div class="right-content">
+              <div className="content-box">
+                <Router>
+                  <Route exact path="/" component={Draw} />
+                  <Route exact path="/draw/:id" component={Draw} />
+                  <Route exact path="/draw" component={NewDraw} />
+                </Router>
+              </div>
+            </div>
+          </div>
         </div>
-      </Fragment>
+      </React.StrictMode >
     );
   }
 }
