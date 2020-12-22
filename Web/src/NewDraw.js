@@ -4,8 +4,7 @@ import './App.css';
 class NewDraw extends Component {
   constructor(props) {
     super(props);
-    const id = props.match?.params?.id ?? this.props.roomId;
-
+    
     this.state = {
     };
   }
