@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import './App.css';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+
 import Draw from './Draw';
 import NewDraw from './NewDraw';
 import NavBar from './NavBar';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 class App extends Component {
   constructor(props) {
