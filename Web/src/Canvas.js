@@ -25,8 +25,6 @@ class Canvas extends Component {
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
     lastRefresh;
-    //serviceUrl = 'https://localhost:44386';
-    serviceUrl = 'https://togetherservice.azurewebsites.net';
 
     changeFormat(format) {
         this.setState({
@@ -35,14 +33,14 @@ class Canvas extends Component {
     }
 
     onMouseDown({ nativeEvent }) {
-        console.log('onMouseDown'); 
+        console.log('onMouseDown');
         const { offsetX, offsetY } = nativeEvent;
         this.isPainting = true;
         this.prevPos = { offsetX, offsetY };
     }
 
     onMouseMove({ nativeEvent }) {
-        console.log('onMouseMove'); 
+        console.log('onMouseMove');
         if (this.isPainting) {
             const { offsetX, offsetY } = nativeEvent;
             const offSetData = { offsetX, offsetY };
@@ -60,7 +58,7 @@ class Canvas extends Component {
     }
 
     endPaintEvent() {
-        console.log('endPaintEvent'); 
+        console.log('endPaintEvent');
         if (this.isPainting) {
             this.isPainting = false;
             this.sendPaintData();
@@ -69,7 +67,7 @@ class Canvas extends Component {
 
     // Prevent scrolling when touching the canvas
     onTouchStart(nativeEvent) {
-        console.log('onTouchStart'); 
+        console.log('onTouchStart');
         if (nativeEvent === undefined) {
             return;
         }
@@ -86,7 +84,7 @@ class Canvas extends Component {
     }
 
     onTouchMove(nativeEvent) {
-        console.log('onTouchMove'); 
+        console.log('onTouchMove');
 
         if (nativeEvent === undefined) {
             return;
@@ -95,7 +93,7 @@ class Canvas extends Component {
         if (nativeEvent.target === this.canvas) {
             nativeEvent.preventDefault();
         }
-        
+
         const { offsetX, offsetY } = this.getTouchPos(this.canvas, nativeEvent);
         const offSetData = { offsetX, offsetY };
 
@@ -107,14 +105,14 @@ class Canvas extends Component {
         this.line = this.line.concat(positionData);
         this.paint(this.prevPos, offSetData, this.state.color);
     }
-    
+
     getTouchPos(canvasDom, touchEvent) {
         var rect = canvasDom.getBoundingClientRect();
         return {
             offsetX: touchEvent.touches[0].clientX - rect.left,
             offsetY: touchEvent.touches[0].clientY - rect.top
         };
-      }
+    }
 
     paint(prevPos, currPos, strokeStyle) {
         const { offsetX, offsetY } = currPos;
@@ -136,16 +134,13 @@ class Canvas extends Component {
     }
 
     async sendPaintData() {
-        const body = {
-            key: this.props.roomId,
-            paintData: [{
-                line: this.line,
-                userId: this.userId,
-                color: this.state.color,
-            }]
-        };
+        const body = [{
+            line: this.line,
+            userId: this.userId,
+            color: this.state.color,
+        }];
 
-        await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'home'}&userId=${this.userId}`, {
+        await fetch(`${this.serviceUrl}/paintdata?roomId=${this.props.roomId ?? 'home'}&userId=${this.userId}`, {
             method: 'post',
             body: JSON.stringify(body),
             headers: {
@@ -158,7 +153,7 @@ class Canvas extends Component {
         if (this.lastRefresh === undefined || this.lastRefresh + 1000 < Date.now()) {
             this.lastRefresh = Date.now();
 
-            const response = await fetch(`${this.serviceUrl}/paint?roomId=${this.props.roomId ?? 'home'}&userId=${this.userId}`, {
+            const response = await fetch(`${this.serviceUrl}/paintdata?roomId=${this.props.roomId ?? 'home'}&userId=${this.userId}`, {
                 method: 'get',
                 headers: {
                     'content-type': 'application/json',
@@ -169,13 +164,13 @@ class Canvas extends Component {
                 return;
             }
 
-            const data = await response.json();
+            const paintData = await response.json();
 
-            if (data == null) {
+            if (paintData == null) {
                 return;
             }
 
-            data.paintData.forEach((lineData) => {
+            paintData.forEach((lineData) => {
                 if (lineData.userId !== this.userId) {
                     lineData.line.forEach((line) => {
                         this.paint(line.start, line.stop, lineData.color);

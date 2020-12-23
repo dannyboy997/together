@@ -4,24 +4,25 @@ namespace TogetherService.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using TogetherService.Model;
 
     [ApiController]
     [Route("[controller]")]
-    public class PaintController : ControllerBase
+    public class PaintDataController : ControllerBase
     {        
-        private readonly ILogger<PaintController> _logger;
+        private readonly ILogger<PaintingController> _logger;
         private readonly IDataAcess<Drawing> dataAcess;
 
-        public PaintController(ILogger<PaintController> logger)
+        public PaintDataController(ILogger<PaintingController> logger)
         {
             _logger = logger;
             dataAcess = new AzureBlobDataAccess<Drawing>("drawdata");
         }
 
         [HttpGet]
-        public async Task<Drawing> GetAsync(string roomId, string userId)
+        public async Task<List<PaintData>> GetAsync(string roomId, string userId)
         {
             SetHeaders();
 
@@ -32,11 +33,35 @@ namespace TogetherService.Controllers
 
             try
             {
-                return await dataAcess.ReadAsync(roomId);
+                var drawing = await dataAcess.ReadAsync(roomId);
+
+                return drawing.PaintData;
             }
             catch (Exception ex)
             {
-                return null;
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        public async Task PostAsync(string roomId, string userId, List<PaintData> data)
+        {
+            try
+            {
+                SetHeaders();
+
+                Drawing item = await dataAcess.ReadAsync(roomId);
+
+                if (item != null)
+                {
+                    item.PaintData.AddRange(data);
+
+                    await dataAcess.UpdateAsync(item);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
@@ -44,31 +69,6 @@ namespace TogetherService.Controllers
         public void Options(string roomId, string userId)
         {
             SetHeaders();
-        }
-
-        [HttpPost]
-        public async Task PostAsync(string roomId, string userId, Drawing data)
-        {
-            try
-            {
-                SetHeaders();
-                Drawing item = await dataAcess.ReadAsync(roomId);
-
-                if (item == null)
-                {
-                    await dataAcess.CreateAsync(data);
-                }
-                else
-                {
-                    item.PaintData.AddRange(data.PaintData);
-
-                    await dataAcess.UpdateAsync(item);
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
         }
 
         private void SetHeaders()

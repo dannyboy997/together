@@ -2,6 +2,7 @@
 namespace TogetherService.Model
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
 
     public class MemoryDataAccess<Data> : IDataAcess<Data> 
@@ -88,6 +89,11 @@ namespace TogetherService.Model
             {
                 await BackingDataAccess.DeleteAsync(item);
             }
+        }
+
+        public Task<IEnumerable<Data>> ReadAllAsync()
+        {
+            return Task.FromResult(MemoryData.Select(item => (Data)item.Value));
         }
     }
 }

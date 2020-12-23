@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Draw from './Draw';
 import NewDraw from './NewDraw';
 import NavBar from './NavBar';
+import BrowseDrawings from './BrowseDrawings';
 
 class App extends Component {
   constructor(props) {
@@ -13,17 +14,6 @@ class App extends Component {
       roomId: 'Public',
       userName: ''
     };
-
-    this.handleRoomIdChange = this.handleRoomIdChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-  }
-
-  handleRoomIdChange(event) {
-    this.setState({ roomId: event.target.value });
-  }
-
-  handleNameChange(event) {
-    this.setState({ userName: event.target.value });
   }
 
   render() {
@@ -47,6 +37,7 @@ class App extends Component {
                   <Route exact path="/" component={Draw} />
                   <Route exact path="/draw/:id" component={Draw} />
                   <Route exact path="/draw" component={NewDraw} />
+                  <Route exact path="/browse" component={BrowseDrawings} />
                 </Router>
               </div>
             </div>

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using TogetherService.Model;
 
 namespace TogetherService
@@ -9,6 +6,8 @@ namespace TogetherService
     public class Drawing : IModelData
     {
         public string Key { get; set; }
+
+        public string Name { get; set; }
 
         public List<PaintData> PaintData { get;set;}
     }

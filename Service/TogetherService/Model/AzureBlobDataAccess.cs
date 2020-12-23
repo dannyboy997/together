@@ -4,6 +4,7 @@ namespace TogetherService.Model
     using Azure.Storage.Blobs;
     using Newtonsoft.Json;
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
@@ -105,6 +106,20 @@ namespace TogetherService.Model
             {
                 await BackingDataAccess.DeleteAsync(item);
             }
+        }
+
+        public async Task<IEnumerable<Data>> ReadAllAsync()
+        {
+            var items = new List<Data>();
+
+            var blobs = container.GetBlobsAsync();
+
+            await foreach(var blob in blobs)
+            {
+                items.Add(await ReadAsync(blob.Name));
+            }
+
+            return items;
         }
     }
 }

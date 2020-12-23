@@ -14,19 +14,9 @@ class Draw extends Component {
       color: '#ff0000'
     };
 
-    this.handleRoomIdChange = this.handleRoomIdChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
     this.hangleChangeColor = this.hangleChangeColor.bind(this);
 
     this.canvasElement = React.createRef();
-  }
-
-  handleRoomIdChange(event) {
-    this.setState({ roomId: event.target.value });
-  }
-
-  handleNameChange(event) {
-    this.setState({ userName: event.target.value });
   }
 
   hangleChangeColor(color) {

@@ -14,5 +14,7 @@ namespace TogetherService.Model
         Task<Data> UpdateAsync(Data item);
 
         Task DeleteAsync(Data item);
+
+        Task<IEnumerable<Data>> ReadAllAsync();
     }
 }
