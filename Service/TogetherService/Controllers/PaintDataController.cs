@@ -56,6 +56,11 @@ namespace TogetherService.Controllers
 
                 if (item != null)
                 {
+                    if(item.PaintData == null)
+                    {
+                        item.PaintData = new List<PaintData>();
+                    }
+
                     item.PaintData.AddRange(data);
 
                     await dataAcess.UpdateAsync(item);

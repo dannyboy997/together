@@ -35,8 +35,8 @@ class Draw extends Component {
             </div>
             <div>
               <BlockPicker
-                color={ this.state.color }
-                onChangeComplete={(color) => { this.hangleChangeColor(color.hex) } } />
+                color={this.state.color}
+                onChangeComplete={(color) => { this.hangleChangeColor(color.hex) }} />
             </div>
           </div>
           <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />

@@ -17,6 +17,9 @@ class Canvas extends Component {
         };
     }
 
+    //serviceUrl = 'https://localhost:44386';
+    serviceUrl = 'https://togetherservice.azurewebsites.net';
+
     isPainting = false;
     // Different stroke styles to be used for user and guest
     line = [];

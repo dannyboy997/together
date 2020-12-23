@@ -8,7 +8,7 @@ class NewDraw extends Component {
     this.state = {
       paintingName: ''
     };
-    
+
     this.onChangeName = this.onChangeName.bind(this);
     this.createSave = this.createSave.bind(this);
   }

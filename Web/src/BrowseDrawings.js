@@ -41,7 +41,7 @@ class BrowseDrawings extends Component {
   render() {
     const final = [];
     for (let painting of this.state.paintings) {
-      final.push(<li key={painting.Name}><a href={`/draw/${painting.Key}`}>{painting.Name}</a></li>);
+      final.push(<li key={painting.name}><a href={`/draw/${painting.key}`}>{painting.name}</a></li>);
     }
 
     return (
