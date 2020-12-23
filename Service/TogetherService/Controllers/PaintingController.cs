@@ -4,6 +4,7 @@ namespace TogetherService.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using System;
+    using System.Collections.Generic;
     using System.Threading.Tasks;
     using TogetherService.Model;
 
@@ -22,7 +23,7 @@ namespace TogetherService.Controllers
 
 
         [HttpGet]
-        public async Task<Drawing> GetAsync()
+        public async Task<IEnumerable<Drawing>> GetAsync()
         {
             return await dataAcess.ReadAllAsync();
         }
