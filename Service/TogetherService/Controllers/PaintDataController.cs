@@ -22,18 +22,19 @@ namespace TogetherService.Controllers
         }
 
         [HttpGet]
-        public async Task<List<PaintData>> GetAsync(string roomId, string userId)
+        [Route("{id}")]
+        public async Task<List<PaintData>> GetAsync(string id, string userId)
         {
             SetHeaders();
 
-            if (string.IsNullOrWhiteSpace(roomId))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return null;
             }
 
             try
             {
-                var drawing = await dataAcess.ReadAsync(roomId);
+                var drawing = await dataAcess.ReadAsync(id);
 
                 return drawing.PaintData;
             }
@@ -44,13 +45,14 @@ namespace TogetherService.Controllers
         }
 
         [HttpPost]
-        public async Task PostAsync(string roomId, string userId, List<PaintData> data)
+        [Route("{id}")]
+        public async Task PostAsync(string id, string userId, List<PaintData> data)
         {
             try
             {
                 SetHeaders();
 
-                Drawing item = await dataAcess.ReadAsync(roomId);
+                Drawing item = await dataAcess.ReadAsync(id);
 
                 if (item != null)
                 {

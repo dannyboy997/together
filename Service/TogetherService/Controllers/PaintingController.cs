@@ -21,26 +21,28 @@ namespace TogetherService.Controllers
             dataAcess = new AzureBlobDataAccess<Drawing>("drawdata");
         }
 
-
         [HttpGet]
-        public async Task<IEnumerable<Drawing>> GetAsync()
+        public async Task<IEnumerable<Drawing>> GetAllAsync()
         {
+            SetHeaders();
+
             return await dataAcess.ReadAllAsync();
         }
 
         [HttpGet]
-        public async Task<Drawing> GetAsync(string roomId)
+        [Route("{id}")]
+        public async Task<Drawing> GetAsync(string id)
         {
             SetHeaders();
 
-            if (string.IsNullOrWhiteSpace(roomId))
+            if (string.IsNullOrWhiteSpace(id))
             {
                 return null;
             }
 
             try
             {
-                return await dataAcess.ReadAsync(roomId);
+                return await dataAcess.ReadAsync(id);
             }
             catch (Exception ex)
             {
@@ -73,7 +75,7 @@ namespace TogetherService.Controllers
         }
 
         [HttpOptions]
-        public void Options(string roomId, string userId)
+        public void Options()
         {
             SetHeaders();
         }
