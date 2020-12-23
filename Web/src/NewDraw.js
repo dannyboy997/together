@@ -50,7 +50,7 @@ class NewDraw extends Component {
             Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
           </div>
           <div>
-            Public: <input type="radio"></input>
+            Public: <input type="radio" checked="true" disabled="true"></input>
           </div>
           <div>
             <button onClick={this.createSave}>Create Drawing</button>
