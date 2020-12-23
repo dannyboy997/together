@@ -51,7 +51,7 @@ namespace TogetherService.Controllers
         }
 
         [HttpPost]
-        public async Task PostAsync(Drawing data)
+        public async Task<Drawing> PostAsync(Drawing data)
         {
             SetHeaders();
 
@@ -66,7 +66,7 @@ namespace TogetherService.Controllers
                     throw new InvalidOperationException();
                 }
 
-                await dataAcess.CreateAsync(data);
+                return await dataAcess.CreateAsync(data);
             }
             catch (Exception ex)
             {
