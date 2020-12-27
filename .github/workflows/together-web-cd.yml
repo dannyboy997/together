@@ -8,6 +8,8 @@ on:
 env:
   AZURE_STORAGE_ACCOUNT: 'togethersa01'
   NODE_VERSION: '10.x'
+  AZURE_WEBAPP_PACKAGE_PATH: './Web/build'
+  AZURE_WEBAPP_NAME: 'drawittogether'
 
 defaults:
   run:
@@ -41,4 +43,11 @@ jobs:
       with:
         # Specify the script here
         inlineScript: |
-          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --destination '$web' --source ./Web/build   
+          az storage blob upload-batch --account-name ${{ env.AZURE_STORAGE_ACCOUNT }} --destination '$web' --source env.AZURE_WEBAPP_PACKAGE_PATH  
+
+    - name: Publish to Service
+      uses: azure/webapps-deploy@v2
+      with: 
+        app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+        publish-profile: ${{ secrets.AZURE_WEBAPP_SERVICE_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
+        package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
