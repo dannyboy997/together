@@ -38,12 +38,11 @@ html, body {
 .content-box {
   justify-content: center;
   align-content: center;
-  align-items: center;
 	border-radius:3px;
   border:1px solid #fca311;
   background-color: #ffffff;
   height: 100%;
-  display: flex;
+  display: block;
 }
 
 .parent-canvas, .canvas {
