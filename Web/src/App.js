@@ -24,24 +24,12 @@ class App extends Component {
             <NavBar></NavBar>
           </div>
 
-          <div class=".float-container">
-            <div class="left-menu">
-              <div className="content-box">
-                TEst
-              </div>
-            </div>
-
-            <div class="right-content">
-              <div className="content-box">
-                <Router>
-                  <Route exact path="/" component={Draw} />
-                  <Route exact path="/draw/:id" component={Draw} />
-                  <Route exact path="/draw" component={NewDraw} />
-                  <Route exact path="/browse" component={BrowseDrawings} />
-                </Router>
-              </div>
-            </div>
-          </div>
+          <Router>
+            <Route exact path="/" component={Draw} />
+            <Route exact path="/draw/:id" component={Draw} />
+            <Route exact path="/draw" component={NewDraw} />
+            <Route exact path="/browse" component={BrowseDrawings} />
+          </Router>
         </div>
       </React.StrictMode >
     );

@@ -45,15 +45,20 @@ class NewDraw extends Component {
   render() {
     return (
       <Fragment>
-        <div className="main">
-          <div>
-            Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
-          </div>
-          <div>
-            Public: <input type="radio" checked="true" disabled="true"></input>
-          </div>
-          <div>
-            <button onClick={this.createSave}>Create Drawing</button>
+        <div class=".float-container">
+          <div class="right-content">
+            <div className="content-box">
+              <h3 style={{ textAlign: 'center' }}>New Drawing</h3>
+              <div>
+                Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
+              </div>
+              <div>
+                Public: <input type="radio" checked="true" disabled="true"></input>
+              </div>
+              <div>
+                <button onClick={this.createSave}>Create Drawing</button>
+              </div>
+            </div>
           </div>
         </div>
       </Fragment>

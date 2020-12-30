@@ -185,8 +185,10 @@ class Canvas extends Component {
 
     componentDidMount() {
         // Here we set up the properties of the canvas element. 
-        this.canvas.width = 1000;
-        this.canvas.height = 800;
+
+        this.canvas.width = this.canvesParent.offsetWidth;
+        this.canvas.height = this.canvesParent.offsetHeight;
+
         this.ctx = this.canvas.getContext('2d');
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
@@ -197,19 +199,23 @@ class Canvas extends Component {
         this.canvas.addEventListener('touchend', this.endPaintEvent, { passive: false });
 
         this.clear();
+
+        this.refreshData();
     }
 
     render() {
         return (
-            <canvas
-                // We use the ref attribute to get direct access to the canvas element. 
-                ref={(ref) => (this.canvas = ref)}
-                style={{ background: 'white' }}
-                onMouseDown={this.onMouseDown}
-                onMouseLeave={this.endPaintEvent}
-                onMouseUp={this.endPaintEvent}
-                onMouseMove={this.onMouseMove}
-            />
+            <div ref={(ref) => (this.canvesParent = ref)} className='parent-canvas'>
+                <canvas
+                    // We use the ref attribute to get direct access to the canvas element. 
+                    ref={(ref) => (this.canvas = ref)}
+                    className='canvas'
+                    onMouseDown={this.onMouseDown}
+                    onMouseLeave={this.endPaintEvent}
+                    onMouseUp={this.endPaintEvent}
+                    onMouseMove={this.onMouseMove}
+                />
+            </div>
         );
     }
 }
