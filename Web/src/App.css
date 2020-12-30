@@ -38,10 +38,12 @@ html, body {
 .content-box {
   justify-content: center;
   align-content: center;
+  align-items: center;
 	border-radius:3px;
   border:1px solid #fca311;
   background-color: #ffffff;
   height: 100%;
+  display: flex;
 }
 
 .parent-canvas, .canvas {
@@ -60,15 +62,12 @@ h5 {
 .float-container {
   display: flex;
   height: 100%;
-  justify-content: center;
-  align-content: center;
 }
 
 .left-menu {
   width: 20%;
   float: left;
   padding: 15px;
-  flex: 1;
   justify-content: center;
   align-content: center;
 }
@@ -78,5 +77,9 @@ h5 {
   height: 100%;
   float: left;
   padding: 20px;
-  flex: 1;
+}
+
+.inner {
+  width: 100%;
+  position: relative;
 }

@@ -49,14 +49,15 @@ class NewDraw extends Component {
           <div class="right-content">
             <div className="content-box">
               <h3 style={{ textAlign: 'center' }}>New Drawing</h3>
-              <div>
+
+              <div className="inner">
                 Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
               </div>
-              <div>
+              <div className="inner">
                 Public: <input type="radio" checked="true" disabled="true"></input>
               </div>
-              <div>
-                <button onClick={this.createSave}>Create Drawing</button>
+              <div className="inner">
+                <button class="menu-button" onClick={this.createSave}>Create Drawing</button>
               </div>
             </div>
           </div>
