@@ -58,8 +58,8 @@ class Draw extends Component {
   render() {
     return (
       <Fragment>
-        <div class=".float-container">
-          <div class="left-menu">
+        <div className=".float-container">
+          <div className="left-menu">
             <div className="content-box">
               <BlockPicker
                 color={this.state.color}
@@ -67,7 +67,7 @@ class Draw extends Component {
             </div>
           </div>
 
-          <div class="right-content">
+          <div className="right-content">
             <div className="content-box">
               <h3 style={{ textAlign: 'center' }}>{this.state.painting.name}</h3>
 

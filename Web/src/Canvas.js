@@ -20,6 +20,11 @@ class Canvas extends Component {
     //serviceUrl = 'https://localhost:44386';
     serviceUrl = 'https://togetherservice.azurewebsites.net';
 
+    width = 1000;
+    height = 800;
+
+    scale = 1;
+
     isPainting = false;
     // Different stroke styles to be used for user and guest
     line = [];
@@ -28,6 +33,7 @@ class Canvas extends Component {
     prevPos = { offsetX: 0, offsetY: 0 };
     name;
     lastRefresh;
+
 
     changeFormat(format) {
         this.setState({
@@ -54,7 +60,7 @@ class Canvas extends Component {
             };
             // Add the position to the line array
             this.line = this.line.concat(positionData);
-            this.paint(this.prevPos, offSetData, this.state.color);
+            this.paint(this.prevPos, offSetData, this.state.color, 1);
         }
 
         this.refreshData();
@@ -117,16 +123,16 @@ class Canvas extends Component {
         };
     }
 
-    paint(prevPos, currPos, strokeStyle) {
+    paint(prevPos, currPos, strokeStyle, scale) {
         const { offsetX, offsetY } = currPos;
         const { offsetX: x, offsetY: y } = prevPos;
 
         this.ctx.beginPath();
         this.ctx.strokeStyle = strokeStyle;
         // Move the the prevPosition of the mouse
-        this.ctx.moveTo(x, y);
+        this.ctx.moveTo(x * scale, y * scale);
         // Draw a line to the current position of the mouse
-        this.ctx.lineTo(offsetX, offsetY);
+        this.ctx.lineTo(offsetX * scale, offsetY * scale);
         // Visualize the line using the strokeStyle
         this.ctx.stroke();
         this.prevPos = { offsetX, offsetY };
@@ -173,10 +179,17 @@ class Canvas extends Component {
                 return;
             }
 
+            this.scale = this.canvesParent.clientWidth / this.width;
+
+            this.canvas.width = this.canvesParent.clientWidth;
+            this.canvas.height = this.height * this.scale;
+            
+            this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+
             paintData.forEach((lineData) => {
                 if (lineData.userId !== this.userId) {
                     lineData.line.forEach((line) => {
-                        this.paint(line.start, line.stop, lineData.color);
+                        this.paint(line.start, line.stop, lineData.color, this.scale);
                     });
                 }
             });

@@ -46,8 +46,8 @@ class BrowseDrawings extends Component {
 
     return (
       <Fragment>
-        <div class=".float-container">
-          <div class="right-content">
+        <div className=".float-container">
+          <div className="right-content">
             <div className="content-box">
               <h3 style={{ textAlign: 'center' }}>Browse Paintings</h3>
 
