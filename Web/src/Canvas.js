@@ -16,7 +16,7 @@ class Canvas extends Component {
         this.state = {
             color: this.props.color,
             pollingCount: 0,
-            delay: 2000
+            delay: 3000
         };
     }
 
@@ -196,14 +196,14 @@ class Canvas extends Component {
             this.canvas.width = this.canvesParent.clientWidth;
             this.canvas.height = this.height * this.scale;
 
-            this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
+            //this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
 
             paintData.forEach((lineData) => {
-                if (lineData.userId !== this.userId) {
+                //if (lineData.userId !== this.userId) {
                     lineData.line.forEach((line) => {
                         this.paint(line.start, line.stop, lineData.color, this.scale);
                     });
-                }
+                //}
             });
         }
     }
@@ -225,6 +225,7 @@ class Canvas extends Component {
         this.canvas.addEventListener('touchend', this.endPaintEvent, { passive: false });
         window.addEventListener('resize', this.onResize, { passive: false });
         this.clear();
+        this.refreshData();
 
         this.interval = setInterval(this.tick, this.state.delay);
     }
@@ -235,10 +236,6 @@ class Canvas extends Component {
             this.interval = setInterval(this.tick, this.state.delay);
         }
 
-    }
-
-    componentWillMount(){
-        clearInterval(this.interval);
     }
 
     tick = () =>{
