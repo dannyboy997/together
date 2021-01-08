@@ -9,11 +9,14 @@ class Canvas extends Component {
         this.onTouchStart = this.onTouchStart.bind(this);
         this.onTouchMove = this.onTouchMove.bind(this);
         this.endPaintEvent = this.endPaintEvent.bind(this);
+        this.onResize = this.onResize.bind(this);
         this.roomId = this.props.roomId;
         this.name = this.props.name;
 
         this.state = {
-            color: this.props.color
+            color: this.props.color,
+            pollingCount: 0,
+            delay: 2000
         };
     }
 
@@ -55,15 +58,15 @@ class Canvas extends Component {
             const offSetData = { offsetX, offsetY };
             // Set the start and stop position of the paint event.
             const positionData = {
-                start: { ...this.prevPos },
-                stop: { ...offSetData },
+                start: { offsetX: this.prevPos.offsetX  / this.scale, offsetY: this.prevPos.offsetY  / this.scale },
+                stop: { offsetX: offSetData.offsetX  / this.scale, offsetY: offSetData.offsetY  / this.scale }
             };
             // Add the position to the line array
             this.line = this.line.concat(positionData);
             this.paint(this.prevPos, offSetData, this.state.color, 1);
-        }
 
-        this.refreshData();
+            this.prevPos = offSetData;
+        }
     }
 
     endPaintEvent() {
@@ -71,6 +74,8 @@ class Canvas extends Component {
         if (this.isPainting) {
             this.isPainting = false;
             this.sendPaintData();
+
+            this.line = [];
         }
     }
 
@@ -112,7 +117,9 @@ class Canvas extends Component {
         };
         // Add the position to the line array
         this.line = this.line.concat(positionData);
-        this.paint(this.prevPos, offSetData, this.state.color);
+        this.paint(this.prevPos, offSetData, this.state.color, 1);
+
+        this.prevPos = offSetData;
     }
 
     getTouchPos(canvasDom, touchEvent) {
@@ -124,8 +131,8 @@ class Canvas extends Component {
     }
 
     paint(prevPos, currPos, strokeStyle, scale) {
-        const { offsetX, offsetY } = currPos;
         const { offsetX: x, offsetY: y } = prevPos;
+        const { offsetX, offsetY } = currPos;
 
         this.ctx.beginPath();
         this.ctx.strokeStyle = strokeStyle;
@@ -135,7 +142,7 @@ class Canvas extends Component {
         this.ctx.lineTo(offsetX * scale, offsetY * scale);
         // Visualize the line using the strokeStyle
         this.ctx.stroke();
-        this.prevPos = { offsetX, offsetY };
+        //this.prevPos = { offsetX, offsetY };
     }
 
     clear() {
@@ -156,6 +163,11 @@ class Canvas extends Component {
                 'content-type': 'application/json',
             },
         });
+    }
+    
+    onResize(nativeEvent){
+        console.log("resize");
+        this.refreshData();
     }
 
     async refreshData() {
@@ -183,7 +195,7 @@ class Canvas extends Component {
 
             this.canvas.width = this.canvesParent.clientWidth;
             this.canvas.height = this.height * this.scale;
-            
+
             this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
 
             paintData.forEach((lineData) => {
@@ -198,6 +210,7 @@ class Canvas extends Component {
 
     componentDidMount() {
         // Here we set up the properties of the canvas element. 
+        console.log("mount");
 
         this.canvas.width = this.canvesParent.offsetWidth;
         this.canvas.height = this.canvesParent.offsetHeight;
@@ -210,9 +223,25 @@ class Canvas extends Component {
         this.canvas.addEventListener('touchstart', this.onTouchStart, { passive: false });
         this.canvas.addEventListener('touchmove', this.onTouchMove, { passive: false });
         this.canvas.addEventListener('touchend', this.endPaintEvent, { passive: false });
-
+        window.addEventListener('resize', this.onResize, { passive: false });
         this.clear();
 
+        this.interval = setInterval(this.tick, this.state.delay);
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        if(prevState.delay !== this.state.delay){
+            clearInterval(this.interval);
+            this.interval = setInterval(this.tick, this.state.delay);
+        }
+
+    }
+
+    componentWillMount(){
+        clearInterval(this.interval);
+    }
+
+    tick = () =>{
         this.refreshData();
     }
 
