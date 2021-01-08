@@ -112,8 +112,8 @@ class Canvas extends Component {
         const offSetData = { offsetX, offsetY };
 
         const positionData = {
-            start: { ...this.prevPos },
-            stop: { ...offSetData },
+            start: { offsetX: this.prevPos.offsetX  / this.scale, offsetY: this.prevPos.offsetY  / this.scale },
+            stop: { offsetX: offSetData.offsetX  / this.scale, offsetY: offSetData.offsetY  / this.scale }
         };
         // Add the position to the line array
         this.line = this.line.concat(positionData);
