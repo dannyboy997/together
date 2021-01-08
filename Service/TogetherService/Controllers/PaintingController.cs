@@ -18,7 +18,7 @@ namespace TogetherService.Controllers
         public PaintingController(ILogger<PaintingController> logger)
         {
             _logger = logger;
-            dataAcess = new AzureBlobDataAccess<Drawing>("drawdata");
+            dataAcess = new MemoryDataAccess<Drawing>(new AzureBlobDataAccess<Drawing>("drawdata"));
         }
 
         [HttpGet]

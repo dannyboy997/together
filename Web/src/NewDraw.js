@@ -39,7 +39,7 @@ class NewDraw extends Component {
 
     const painting = await response.json();
 
-    this.window.location.href = `/draw/${painting.Key}`;
+    window.location = `/draw/${painting.key}`;
   }
 
   render() {
