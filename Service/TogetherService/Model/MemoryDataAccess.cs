@@ -95,7 +95,7 @@ namespace TogetherService.Model
         {
             if (BackingDataAccess != null)
             {
-                await BackingDataAccess.ReadAllAsync();
+                return await BackingDataAccess.ReadAllAsync();
             }
 
             return MemoryData.Select(item => (Data)item.Value);
