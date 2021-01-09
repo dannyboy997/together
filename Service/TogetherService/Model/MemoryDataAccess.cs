@@ -91,9 +91,14 @@ namespace TogetherService.Model
             }
         }
 
-        public Task<IEnumerable<Data>> ReadAllAsync()
+        public async Task<IEnumerable<Data>> ReadAllAsync()
         {
-            return Task.FromResult(MemoryData.Select(item => (Data)item.Value));
+            if (BackingDataAccess != null)
+            {
+                await BackingDataAccess.ReadAllAsync();
+            }
+
+            return MemoryData.Select(item => (Data)item.Value);
         }
     }
 }
