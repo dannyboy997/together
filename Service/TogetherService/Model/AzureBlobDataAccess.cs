@@ -29,8 +29,8 @@ namespace TogetherService.Model
 
             try
             {
-                var appSettings = ConfigurationManager.AppSettings;
-                result = appSettings[key] ?? "Not Found";
+                //var appSettings = ConfigurationManager.AppSettings;
+                result = Environment.GetEnvironmentVariable(key);
                 Console.WriteLine(result);
             }
             catch (ConfigurationErrorsException)
