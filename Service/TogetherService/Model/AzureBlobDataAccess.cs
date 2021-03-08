@@ -5,6 +5,7 @@ namespace TogetherService.Model
     using Newtonsoft.Json;
     using System;
     using System.Collections.Generic;
+    using System.Configuration;
     using System.IO;
     using System.Text;
     using System.Threading.Tasks;
@@ -12,14 +13,32 @@ namespace TogetherService.Model
     public class AzureBlobDataAccess<Data> : IDataAcess<Data> 
         where Data : class, IModelData
     {
-        private string connectionString = "BlobEndpoint=https://togethersa01.blob.core.windows.net/;QueueEndpoint=https://togethersa01.queue.core.windows.net/;FileEndpoint=https://togethersa01.file.core.windows.net/;TableEndpoint=https://togethersa01.table.core.windows.net/;SharedAccessSignature=sv=2019-12-12&ss=b&srt=co&sp=rwdlacx&se=2021-03-01T09:50:12Z&st=2020-12-10T01:50:12Z&spr=https&sig=iQtRYBmCyCKBvkeWoW4KMAhGQ0%2BjXbj2HGbUmz4wDME%3D";
+        private string connectionString;
         private BlobContainerClient container;
 
         private readonly IDataAcess<Data> BackingDataAccess;
 
         public AzureBlobDataAccess(string containerName)
         {
+            connectionString = ReadSetting("ConnectionString");
             container = new BlobContainerClient(connectionString, containerName);
+        }
+        static string ReadSetting(string key)
+        {
+            string result = null;
+
+            try
+            {
+                var appSettings = ConfigurationManager.AppSettings;
+                result = appSettings[key] ?? "Not Found";
+                Console.WriteLine(result);
+            }
+            catch (ConfigurationErrorsException)
+            {
+                Console.WriteLine("Error reading app settings");
+            }
+
+            return result;
         }
 
         public AzureBlobDataAccess(IDataAcess<Data> backingDataAccess, string containerName) : this(containerName)
