@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import './App.css';
 
 class NavBar extends Component {
   constructor(props) {

@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import './App.css';
 
 class BrowseDrawings extends Component {
   constructor(props) {

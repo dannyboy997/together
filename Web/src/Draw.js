@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import './App.css';
 import Canvas from './Canvas';
 import { BlockPicker } from 'react-color'
 // javascript plugin used to create scrollbars on windows
