@@ -1,7 +1,14 @@
-import React, { Component, Fragment } from 'react';
-import './App.css';
+import React, { Component } from 'react';
 import Canvas from './Canvas';
 import { BlockPicker } from 'react-color'
+// javascript plugin used to create scrollbars on windows
+import PerfectScrollbar from "perfect-scrollbar";
+// reactstrap components
+import {
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 
 class Draw extends Component {
   constructor(props) {
@@ -55,27 +62,56 @@ class Draw extends Component {
     this.canvasElement.current.changeFormat(this.state.color);
   }
 
+  ps = null;
+
+  useEffect() {
+    if (navigator.platform.indexOf("Win") > -1) {
+      document.documentElement.className += " perfect-scrollbar-on";
+      document.documentElement.classList.remove("perfect-scrollbar-off");
+      let tables = document.querySelectorAll(".table-responsive");
+      for (let i = 0; i < tables.length; i++) {
+        this.ps = new PerfectScrollbar(tables[i]);
+      }
+    }
+    document.body.classList.toggle("profile-page");
+    // Specify how to clean up after this effect:
+    return function cleanup() {
+      if (navigator.platform.indexOf("Win") > -1) {
+        this.ps.destroy();
+        document.documentElement.className += " perfect-scrollbar-off";
+        document.documentElement.classList.remove("perfect-scrollbar-on");
+      }
+      document.body.classList.toggle("profile-page");
+    };
+  }
+
   render() {
     return (
-      <Fragment>
-        <div className=".float-container">
-          <div className="left-menu">
-            <div className="content-box">
-              <BlockPicker
-                color={this.state.color}
-                onChangeComplete={(color) => { this.hangleChangeColor(color.hex) }} />
-            </div>
-          </div>
-
-          <div className="right-content">
-            <div className="content-box">
-              <h3 style={{ textAlign: 'center' }}>{this.state.painting.name}</h3>
-
-              <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />
-            </div>
-          </div>
+      <div className="wrapper">
+        <div className="section">
+          <Container>
+            <Row className="row-grid justify-content-between align-items-center text-center">
+              <Col lg>
+                <h1 className="text-white">
+                  {this.state.painting.name}
+                </h1>
+              </Col>
+            </Row>
+            <Row className="justify-content-between">
+              <Col md="1">
+                <BlockPicker
+                  color={this.state.color}
+                  onChangeComplete={(color) => { this.hangleChangeColor(color.hex) }} />
+              </Col>
+              <Col md="9">
+                <div>
+                  <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />
+                </div>
+              </Col>
+            </Row>
+          </Container>
         </div>
-      </Fragment>
+      </div>
     );
   }
 }

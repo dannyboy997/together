@@ -29,7 +29,6 @@ namespace TogetherService.Model
 
             try
             {
-                //var appSettings = ConfigurationManager.AppSettings;
                 result = Environment.GetEnvironmentVariable(key);
                 Console.WriteLine(result);
             }
