@@ -196,6 +196,8 @@ class Canvas extends Component {
             this.canvas.width = this.canvesParent.clientWidth;
             this.canvas.height = this.height * this.scale;
 
+            this.ctx.fillStyle = "white";
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
             //this.ctx.clearRect(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
 
             paintData.forEach((lineData) => {
@@ -219,6 +221,8 @@ class Canvas extends Component {
         this.ctx.lineJoin = 'round';
         this.ctx.lineCap = 'round';
         this.ctx.lineWidth = 2;
+        this.ctx.fillStyle = "black";
+        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.canvas.addEventListener('touchstart', this.onTouchStart, { passive: false });
         this.canvas.addEventListener('touchmove', this.onTouchMove, { passive: false });
@@ -235,7 +239,6 @@ class Canvas extends Component {
             clearInterval(this.interval);
             this.interval = setInterval(this.tick, this.state.delay);
         }
-
     }
 
     tick = () =>{

@@ -17,7 +17,7 @@
 */
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import "assets/css/nucleo-icons.css";
 import "assets/scss/blk-design-system-react.scss?v=1.2.0";
@@ -25,36 +25,22 @@ import "assets/demo/demo.css";
 
 import Draw from './Draw';
 import NewDraw from './NewDraw';
-import NavBar from './NavBar';
 import BrowseDrawings from './BrowseDrawings';
 
-import Index from "views/Index.js";
-import LandingPage from "views/examples/LandingPage.js";
-import RegisterPage from "views/examples/RegisterPage.js";
-import ProfilePage from "views/examples/ProfilePage.js";
-
+// core components
+import Navbar from "components/Navbars/Navbar.js";
+import Footer from "components/Footer/Footer.js";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route exact path="/" component={Draw} />
-      <Route exact path="/draw/:id" component={Draw} />
-      <Route exact path="/draw" component={NewDraw} />
-      <Route exact path="/browse" component={BrowseDrawings} />
-      <Route path="/components" render={(props) => <Index {...props} />} />
-      <Route
-        path="/landing-page"
-        render={(props) => <LandingPage {...props} />}
-      />
-      <Route
-        path="/register-page"
-        render={(props) => <RegisterPage {...props} />}
-      />
-      <Route
-        path="/profile-page"
-        render={(props) => <ProfilePage {...props} />}
-      />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById("root")
-);
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Draw} Id="home" />
+        <Route exact path="/draw/:id" component={Draw} />
+        <Route exact path="/draw" component={NewDraw} />
+        <Route exact path="/browse" component={BrowseDrawings} />
+      </Switch>
+      <Footer />
+    </BrowserRouter>,
+    document.getElementById("root")
+    );

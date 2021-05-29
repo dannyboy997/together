@@ -1,5 +1,12 @@
 import React, { Component, Fragment } from 'react';
 
+// reactstrap components
+import {
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
+
 class NewDraw extends Component {
   constructor(props) {
     super(props);
@@ -43,25 +50,41 @@ class NewDraw extends Component {
 
   render() {
     return (
-      <Fragment>
-        <div className=".float-container">
-          <div className="right-content">
-            <div className="content-box">
-              <h3 style={{ textAlign: 'center' }}>New Drawing</h3>
+      <div className="wrapper">
+        <div className="section">
+          <Container>
+          <Row className="row-grid justify-content-between align-items-center text-center">
+              <Col lg>
+                <h1 className="text-white">
+                New Drawing
+                </h1>
+              </Col>
+            </Row>
+            <Row className="justify-content-between">
+              <Col md="5">
+                <Fragment>
+                  <div className=".float-container">
+                    <div className="right-content">
+                      <div className="content-box">
 
-              <div className="inner">
-                Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
-              </div>
-              <div className="inner">
-                Public: <input type="radio" checked="true" disabled="true"></input>
-              </div>
-              <div className="inner">
-                <button class="menu-button" onClick={this.createSave}>Create Drawing</button>
-              </div>
-            </div>
-          </div>
+                        <div className="inner">
+                          Name: <input type="textbox" value={this.state.paintingName} onChange={this.onChangeName} />
+                        </div>
+                        <div className="inner">
+                          Public: <input type="checkbox" checked="true" disabled="true"></input>
+                        </div>
+                        <div className="inner">
+                          <button class="menu-button" onClick={this.createSave}>Create Drawing</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Fragment>
+              </Col>
+            </Row>
+          </Container>
         </div>
-      </Fragment>
+      </div>
     );
   }
 }

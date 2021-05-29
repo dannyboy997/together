@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Canvas from './Canvas';
 import { BlockPicker } from 'react-color'
 // javascript plugin used to create scrollbars on windows
@@ -9,10 +9,6 @@ import {
   Row,
   Col,
 } from "reactstrap";
-
-// core components
-import ExamplesNavbar from "components/Navbars/ExamplesNavbar.js";
-import Footer from "components/Footer/Footer.js";
 
 class Draw extends Component {
   constructor(props) {
@@ -91,41 +87,29 @@ class Draw extends Component {
 
   render() {
     return (
-      <div>
-        <ExamplesNavbar />
-        <div className="wrapper">
-          <div className="section">
-            <Container>
-              <Row className="justify-content-between">
-                <Col md="6">
-                  <Row className="justify-content-between align-items-center">
-                  </Row>
-                </Col>
-                <Col md="5">
-                  <Fragment>
-                    <div className=".float-container">
-                      <div className="left-menu">
-                        <div className="content-box">
-                          <BlockPicker
-                            color={this.state.color}
-                            onChangeComplete={(color) => { this.hangleChangeColor(color.hex) }} />
-                        </div>
-                      </div>
-
-                      <div className="right-content">
-                        <div className="content-box">
-                          <h3 style={{ textAlign: 'center' }}>{this.state.painting.name}</h3>
-
-                          <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />
-                        </div>
-                      </div>
-                    </div>
-                  </Fragment>
-                </Col>
-              </Row>
-            </Container>
-          </div>
-          <Footer />
+      <div className="wrapper">
+        <div className="section">
+          <Container>
+            <Row className="row-grid justify-content-between align-items-center text-center">
+              <Col lg>
+                <h1 className="text-white">
+                  {this.state.painting.name}
+                </h1>
+              </Col>
+            </Row>
+            <Row className="justify-content-between">
+              <Col md="1">
+                <BlockPicker
+                  color={this.state.color}
+                  onChangeComplete={(color) => { this.hangleChangeColor(color.hex) }} />
+              </Col>
+              <Col md="9">
+                <div>
+                  <Canvas ref={this.canvasElement} roomId={this.state.roomId} name={this.state.userName} color={this.state.color} />
+                </div>
+              </Col>
+            </Row>
+          </Container>
         </div>
       </div>
     );
