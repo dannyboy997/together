@@ -28,7 +28,6 @@ import {
   Container,
   Row,
   Col,
-  UncontrolledTooltip,
 } from "reactstrap";
 
 export default function ExamplesNavbar() {
